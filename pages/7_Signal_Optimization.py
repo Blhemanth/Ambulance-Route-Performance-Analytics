@@ -115,10 +115,10 @@ for i in range(num_veh_phases):
             min_value=50.0, max_value=3000.0,
             value=default_demands[i % len(default_demands)],
             step=50.0,
-            key=f"dem_{p_no}"
+            key=f"dem_{int_id}_{p_no}"
         )
-        lanes = st.selectbox(f"Lanes:", [1, 2, 3, 4], index=1, key=f"lanes_{p_no}")
-        wt = st.slider(f"Priority Weight:", 1.0, 5.0, 1.0, step=0.5, key=f"wt_{p_no}")
+        lanes = st.selectbox(f"Lanes:", [1, 2, 3, 4], index=1, key=f"lanes_{int_id}_{p_no}")
+        wt = st.slider(f"Priority Weight:", 1.0, 5.0, 1.0, step=0.5, key=f"wt_{int_id}_{p_no}")
         
         phases_config.append({
             "phase_number": p_no,

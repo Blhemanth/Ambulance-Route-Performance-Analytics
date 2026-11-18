@@ -145,26 +145,43 @@ with tab5:
 # TAB 6: MANUAL CORRECTION
 with tab6:
     st.markdown("#### Interactive Manual Plan Adjustment & Review")
-    st.markdown("Test manual timing corrections and observe immediate cycle time validation:")
+    st.markdown("Test manual timing corrections and observe immediate cycle time conservation validation:")
     
     mc_c1, mc_c2, mc_c3 = st.columns(3)
     c_int = mc_c1.selectbox("Select Junction to Adjust:", sorted(list(df_nodes["name"].unique())), key="mc_int")
-    c_cycle = mc_c2.number_input("Target Cycle Length (s):", min_value=60, max_value=240, value=120, step=5)
-    c_peds = mc_c3.number_input("Pedestrian Clearance (s):", min_value=5, max_value=30, value=10, step=1)
+    int_row = df_nodes[df_nodes["name"] == c_int].iloc[0]
+    int_id = int_row["intersection_id"]
+    default_c = int(int_row.get("cycle_time_sec", 120))
+    n_phases = max(2, min(6, int(int_row.get("num_phases", 3))))
     
-    p1, p2, p3 = st.columns(3)
-    g1 = p1.slider("Phase 1 Green (s):", 5, 80, 40)
-    g2 = p2.slider("Phase 2 Green (s):", 5, 80, 35)
-    g3 = p3.slider("Phase 3 Green (s):", 5, 80, 23)
+    c_cycle = mc_c2.number_input("Target Cycle Length (s):", min_value=60, max_value=240, value=default_c, step=5, key=f"cycle_{int_id}")
+    c_peds = mc_c3.number_input("Pedestrian Clearance (s):", min_value=5, max_value=30, value=10, step=1, key=f"ped_{int_id}")
     
-    yellow_all = 3 * 4.0 # 3 phases * 4s lost time
-    sum_allocated = g1 + g2 + g3 + c_peds + yellow_all
+    # Extract existing greens if available
+    curr_t = df_timings[df_timings["intersection_id"] == int_id]
+    base_greens = {}
+    if len(curr_t) > 0:
+        p_sub = curr_t[curr_t["plan_name"] == curr_t["plan_name"].iloc[0]]
+        for _, r in p_sub.iterrows():
+            base_greens[int(r["phase_number"])] = int(r["green_duration_sec"])
+
+    p_cols = st.columns(n_phases)
+    allocated_greens = []
+    for idx in range(n_phases):
+        p_num = idx + 1
+        def_g = base_greens.get(p_num, max(15, (default_c - n_phases * 4 - 10) // n_phases))
+        with p_cols[idx]:
+            g_val = st.slider(f"Phase {p_num} Green (s):", 5, 120, def_g, key=f"mc_g_{int_id}_{p_num}")
+            allocated_greens.append(g_val)
+    
+    yellow_all = n_phases * 4.0 # Lost clearance time
+    sum_allocated = sum(allocated_greens) + c_peds + yellow_all
     
     if abs(sum_allocated - c_cycle) <= 1.0:
-        st.success(f"✅ Perfectly Balanced: Allocated = {sum_allocated}s, Stated Cycle = {c_cycle}s")
+        st.success(f"✅ Perfectly Balanced: Allocated = {sum_allocated:.0f}s (Greens: {sum(allocated_greens)}s + Ped: {c_peds}s + Lost: {yellow_all:.0f}s) == Target Cycle: {c_cycle}s")
     else:
         diff = sum_allocated - c_cycle
-        st.warning(f"⚠️ Imbalance: Allocated = {sum_allocated}s, Target Cycle = {c_cycle}s (Difference: {diff:+0.1f}s)")
+        st.warning(f"⚠️ Cycle Imbalance: Allocated = {sum_allocated:.0f}s vs Target Cycle = {c_cycle}s (Discrepancy: {diff:+0.1f}s)")
 
 render_workflow_navigation(
     prev_page="pages/1_Overview.py",

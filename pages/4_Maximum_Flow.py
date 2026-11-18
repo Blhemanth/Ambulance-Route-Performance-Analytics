@@ -79,8 +79,8 @@ else:
 idx_s = sorted_ids.index(default_s) if default_s in sorted_ids else 0
 idx_t = sorted_ids.index(default_t) if default_t in sorted_ids else len(sorted_ids) - 1
 
-source_id = col_p2.selectbox("Source Node (s):", sorted_ids, index=idx_s, format_func=lambda x: node_names.get(x, x))
-sink_id = col_p3.selectbox("Sink Node (t):", sorted_ids, index=idx_t, format_func=lambda x: node_names.get(x, x))
+source_id = col_p2.selectbox("Source Node (s):", sorted_ids, index=idx_s, key=f"mf_source_{sel_preset}", format_func=lambda x: node_names.get(x, x))
+sink_id = col_p3.selectbox("Sink Node (t):", sorted_ids, index=idx_t, key=f"mf_sink_{sel_preset}", format_func=lambda x: node_names.get(x, x))
 
 col_opt1, col_opt2 = st.columns([1, 1])
 cap_metric = col_opt1.radio(

@@ -101,7 +101,8 @@ class ShortestPathOptimizer:
         origin: str,
         destination: str,
         baseline_graph: nx.DiGraph,
-        optimized_graph: nx.DiGraph
+        optimized_graph: nx.DiGraph,
+        weight_metric: str = "cost"
     ) -> Dict[str, Any]:
         """
         Compares route traversal times and intersection delay between baseline PDF timings
@@ -110,8 +111,8 @@ class ShortestPathOptimizer:
         opt_base = ShortestPathOptimizer(baseline_graph)
         opt_tuned = ShortestPathOptimizer(optimized_graph)
 
-        res_base = opt_base.find_shortest_path(origin, destination, weight_metric="cost")
-        res_opt = opt_tuned.find_shortest_path(origin, destination, weight_metric="cost")
+        res_base = opt_base.find_shortest_path(origin, destination, weight_metric=weight_metric)
+        res_opt = opt_tuned.find_shortest_path(origin, destination, weight_metric=weight_metric)
 
         if res_base["status"] != "OPTIMAL" or res_opt["status"] != "OPTIMAL":
             return {

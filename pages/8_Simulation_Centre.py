@@ -74,7 +74,9 @@ sub_G = G_macro.subgraph(corr_nodes).copy()
 
 btn_run = st.button("🚀 Run Dynamic Simulation Comparison", type="primary")
 
-if btn_run or "sim_results" not in st.session_state:
+current_sim_key = f"{sel_corr_name}_{sim_duration_s}_{demand_scale}_{rand_seed}"
+
+if btn_run or "sim_results" not in st.session_state or st.session_state.get("last_sim_key") != current_sim_key:
     with st.spinner("Executing dynamic meso-queue simulation under baseline and optimized signal control..."):
         simulator = TrafficSimulator(sub_G)
         sim_res = simulator.run_analytical_simulation(
@@ -83,6 +85,7 @@ if btn_run or "sim_results" not in st.session_state:
             seed=int(rand_seed)
         )
         st.session_state["sim_results"] = sim_res
+        st.session_state["last_sim_key"] = current_sim_key
 
 sim_res = st.session_state["sim_results"]
 

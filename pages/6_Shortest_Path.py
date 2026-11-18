@@ -78,8 +78,8 @@ else:
 idx_o = sorted_nodes.index(def_orig) if def_orig in sorted_nodes else 0
 idx_d = sorted_nodes.index(def_dest) if def_dest in sorted_nodes else len(sorted_nodes) - 1
 
-orig_id = c_p2.selectbox("Origin Intersection (s):", sorted_nodes, index=idx_o, format_func=lambda x: node_names.get(x, x))
-dest_id = c_p3.selectbox("Destination Intersection (t):", sorted_nodes, index=idx_d, format_func=lambda x: node_names.get(x, x))
+orig_id = c_p2.selectbox("Origin Intersection (s):", sorted_nodes, index=idx_o, key=f"orig_{sel_route_preset}", format_func=lambda x: node_names.get(x, x))
+dest_id = c_p3.selectbox("Destination Intersection (t):", sorted_nodes, index=idx_d, key=f"dest_{sel_route_preset}", format_func=lambda x: node_names.get(x, x))
 
 col_m1, col_m2 = st.columns([1, 1])
 weight_attr = col_m1.radio(
@@ -111,7 +111,7 @@ else:
                 d["cost"] = round(d.get("free_flow_time_min", 2.0) + new_delay, 2)
 
             sp_optimizer = ShortestPathOptimizer(baseline_G)
-            comp = sp_optimizer.compare_routes(orig_id, dest_id, baseline_G, optimized_G)
+            comp = sp_optimizer.compare_routes(orig_id, dest_id, baseline_G, optimized_G, weight_metric=weight_attr)
         except Exception as e:
             comp = {"status": "ERROR", "message": str(e)}
 

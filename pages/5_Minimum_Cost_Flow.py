@@ -76,8 +76,8 @@ else:
 idx_s = sorted_ids.index(default_s) if default_s in sorted_ids else 0
 idx_t = sorted_ids.index(default_t) if default_t in sorted_ids else 1
 
-origin_node = col_p2.selectbox("Origin Supply Node (b_s > 0):", sorted_ids, index=idx_s, format_func=lambda x: node_names.get(x, x))
-dest_node = col_p3.selectbox("Destination Demand Node (b_t < 0):", sorted_ids, index=idx_t, format_func=lambda x: node_names.get(x, x))
+origin_node = col_p2.selectbox("Origin Supply Node (b_s > 0):", sorted_ids, index=idx_s, key=f"mcf_orig_{sel_preset}", format_func=lambda x: node_names.get(x, x))
+dest_node = col_p3.selectbox("Destination Demand Node (b_t < 0):", sorted_ids, index=idx_t, key=f"mcf_dest_{sel_preset}", format_func=lambda x: node_names.get(x, x))
 
 col_opt1, col_opt2 = st.columns([1, 1])
 trip_volume = col_opt1.number_input("Vehicular Demand Volume (PCU/hr):", min_value=100.0, max_value=15000.0, value=1200.0, step=100.0)
@@ -97,13 +97,16 @@ else:
         f_max = mf_res.get("max_flow", 1000.0)
 
     # 2. Check feasibility according to Hoffman's Circulation Theorem / Gale's Demand Theorem
-    if trip_volume > f_max:
+    if f_max <= 0:
+        st.error(f"Zero capacity exists between {origin_node} and {dest_node}. Cannot route flow.")
+        effective_volume = 0.0
+    elif trip_volume > f_max:
         st.warning(
             f"⚠️ **Demand Exceeds Maximum Network Throughput ($d = {trip_volume:,.0f} > F^* = {f_max:,.0f}$ PCU/hr)**: "
             f"By the Max-Flow Min-Cut Theorem, traffic across the minimum cut cannot exceed {f_max:,.0f} PCU/hr without unbounded queue spillback. "
             f"Network Simplex is allocating the feasible upper bound ($0.95 \\times F^* = {f_max * 0.95:,.0f}$ PCU/hr)."
         )
-        effective_volume = max(100.0, f_max * 0.95)
+        effective_volume = max(1.0, min(trip_volume, f_max * 0.95))
     else:
         st.info(f"✅ Demand Volume ({trip_volume:,.0f} PCU/hr) is within structural network capacity bound ($F^* = {f_max:,.0f}$ PCU/hr).")
         effective_volume = trip_volume
@@ -129,7 +132,8 @@ else:
         # KPI Row
         k1, k2, k3, k4 = st.columns(4)
         render_metric(k1, "Total Transportation Cost", f"{tot_cost:,.1f} veh-min", "Objective Function Value Z*", "green")
-        render_metric(k2, "Avg Trip Delay / Vehicle", f"{(tot_cost / effective_volume):,.2f} min", "Per-Vehicle Cost", "normal")
+        avg_d_str = f"{(tot_cost / effective_volume):,.2f} min" if effective_volume > 0 else "0.00 min"
+        render_metric(k2, "Avg Trip Delay / Vehicle", avg_d_str, "Per-Vehicle Cost", "normal")
         render_metric(k3, "Allocated Flow Demand", f"{effective_volume:,.0f} PCU/hr", f"Max Bound: {f_max:,.0f} PCU/hr", "normal")
         render_metric(k4, "Congested Links (v/c > 0.85)", f"{len(congested)} Links", "High Delay Approaches", "amber" if len(congested) > 0 else "green")
 

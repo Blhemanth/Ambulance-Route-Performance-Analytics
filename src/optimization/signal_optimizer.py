@@ -44,6 +44,19 @@ class SignalOptimizer:
         ped_green_allowance = ped_min_green if has_ped_phase else 0.0
         available_green = cycle_time - total_lost_time - ped_green_allowance
 
+        if available_green < num_veh * 5.0:
+            min_req = total_lost_time + ped_green_allowance + num_veh * 5.0
+            return {
+                "status": f"Cycle length ({cycle_time}s) is insufficient to accommodate lost times and pedestrian green (min required: {min_req:.0f}s).",
+                "message": f"Cycle length ({cycle_time}s) is insufficient to accommodate lost times and pedestrian green (min required: {min_req:.0f}s).",
+                "is_optimal": False,
+                "optimized_phase_greens": {},
+                "residual_queues": {},
+                "departures": {},
+                "capacities_pcu_hr": {},
+                "total_cycle_allocated": cycle_time
+            }
+
         if available_green < num_veh * min_veh_green:
             min_veh_green = max(5.0, available_green / float(num_veh))
 
