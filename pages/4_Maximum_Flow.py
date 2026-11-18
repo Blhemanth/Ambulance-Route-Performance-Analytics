@@ -13,19 +13,21 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     get_plotly_layout,
     load_all_datasets,
     load_road_networks
 )
 from src.network.maximum_flow import MaximumFlowOptimizer
 
-st.set_page_config(page_title="Model 1: Maximum Flow | Bengaluru Smart Traffic", page_icon="🌊", layout="wide")
+st.set_page_config(page_title="Model 1: Maximum Flow | Bengaluru Smart Traffic", page_icon="⚡", layout="wide")
 load_custom_css()
 
 render_header(
     title="Model 1: Maximum Flow & Bottleneck Cut Identification",
     subtitle="Determining Maximum Network Throughput and Saturated Bottlenecks via the Max-Flow Min-Cut Theorem",
-    badge_text="Operations Research - Model 1"
+    badge_text="Operations Research - Model 1",
+    current_page="pages/4_Maximum_Flow.py"
 )
 
 # Mathematical formulation box
@@ -223,3 +225,10 @@ else:
 
     else:
         st.error(f"Solver returned non-optimal status: {res.get('message', 'No path exists between source and sink.')}")
+
+render_workflow_navigation(
+    prev_page="pages/3_Network_Visualization.py",
+    prev_label="03. Network Topology Map",
+    next_page="pages/5_Minimum_Cost_Flow.py",
+    next_label="05. Model 2: Min Cost Flow"
+)

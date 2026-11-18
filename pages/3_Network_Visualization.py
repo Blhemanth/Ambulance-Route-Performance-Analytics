@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 from components.ui_helpers import (
     load_custom_css,
     render_header,
+    render_workflow_navigation,
     get_plotly_layout,
     load_all_datasets,
     load_road_networks
@@ -25,7 +26,8 @@ load_custom_css()
 render_header(
     title="Road Network Topology & Turning Movements",
     subtitle="Level 1 Macro Directed Graph G=(V,E) and Level 2 Micro Turning Movement Structure",
-    badge_text="Graph Theory & Topology"
+    badge_text="Graph Theory & Topology",
+    current_page="pages/3_Network_Visualization.py"
 )
 
 data = load_all_datasets()
@@ -212,3 +214,10 @@ with tab_metrics:
             "Cycle Length (s)": d.get("cycle_time_sec", 120)
         })
     st.dataframe(pd.DataFrame(hub_records), use_container_width=True)
+
+render_workflow_navigation(
+    prev_page="pages/2_Dataset_Explorer.py",
+    prev_label="02. Signal Plan Explorer",
+    next_page="pages/4_Maximum_Flow.py",
+    next_label="04. Model 1: Maximum Flow"
+)

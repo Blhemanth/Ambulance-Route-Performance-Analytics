@@ -1,21 +1,21 @@
 """
 UI Helper functions and design components for the Bengaluru Smart Traffic Optimizer.
-Provides dark theme injection, cached dataset loaders, custom KPI metric cards,
-and Plotly dark theme layout presets.
+Provides dark theme injection, custom sidebar navigation, workflow page switching,
+cached dataset loaders, custom KPI metric cards, and Plotly dark theme layout presets.
 """
 
 import os
 import pandas as pd
 import streamlit as st
 import networkx as nx
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 from src.network.graph_builder import GraphBuilder, map_police_station_to_corridor
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "processed")
 STYLE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "style.css")
 
 def load_custom_css():
-    """Injects custom CSS for dark theme and typography."""
+    """Injects custom CSS for dark theme, typography, and micro-animations."""
     if os.path.exists(STYLE_PATH):
         with open(STYLE_PATH, "r", encoding="utf-8") as f:
             css = f.read()
@@ -23,18 +23,62 @@ def load_custom_css():
     else:
         st.markdown("""
         <style>
-        .stApp { background-color: #0B1220; color: #F1F5F9; }
+        .stApp { background-color: #080C14; color: #F8FAFC; }
         </style>
         """, unsafe_allow_html=True)
 
-def render_header(title: str, subtitle: str, badge_text: str = "Operations Research"):
-    """Renders a uniform, academically branded header banner."""
+def render_sidebar_navigation(current_page: str = ""):
+    """Renders a custom, categorized sidebar navigation replacing raw default page links."""
+    with st.sidebar:
+        st.markdown("""
+        <div class="sidebar-header">
+            <div class="sidebar-title">
+                <span class="live-dot"></span> BENGALURU SMART TRAFFIC
+            </div>
+            <div class="sidebar-sub">Operations Research Platform</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown('<div class="nav-section-title">System Architecture</div>', unsafe_allow_html=True)
+        st.page_link("app.py", label="Executive Portal", icon="🏛️", use_container_width=True)
+        st.page_link("pages/1_Overview.py", label="01. Corpus Architecture", icon="📊", use_container_width=True)
+        st.page_link("pages/2_Dataset_Explorer.py", label="02. Signal Plan Explorer", icon="📑", use_container_width=True)
+        st.page_link("pages/3_Network_Visualization.py", label="03. Network Topology Map", icon="🗺️", use_container_width=True)
+        
+        st.markdown('<div class="nav-section-title">Core Network Models</div>', unsafe_allow_html=True)
+        st.page_link("pages/4_Maximum_Flow.py", label="04. Model 1: Maximum Flow", icon="⚡", use_container_width=True)
+        st.page_link("pages/5_Minimum_Cost_Flow.py", label="05. Model 2: Min Cost Flow", icon="⚖️", use_container_width=True)
+        st.page_link("pages/6_Shortest_Path.py", label="06. Model 3: Shortest Path", icon="🛣️", use_container_width=True)
+        st.page_link("pages/7_Signal_Optimization.py", label="07. Model 4: Signal Timing LP", icon="🚦", use_container_width=True)
+        
+        st.markdown('<div class="nav-section-title">Evaluation & Proofs</div>', unsafe_allow_html=True)
+        st.page_link("pages/8_Simulation_Centre.py", label="08. Dynamic Simulation", icon="⏱️", use_container_width=True)
+        st.page_link("pages/9_Analytics.py", label="09. Scenario Stress Testing", icon="📈", use_container_width=True)
+        st.page_link("pages/10_Methodology.py", label="10. Formulations & Proofs", icon="📜", use_container_width=True)
+        
+        st.markdown("---")
+        st.markdown("""
+        <div style="padding: 0.6rem 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;">
+            <div style="font-size: 0.68rem; color: #94A3B8; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.3rem;">ACTIVE SOLVERS</div>
+            <div style="font-size: 0.72rem; color: #34D399; margin-bottom: 0.15rem;">● SciPy HiGHS Simplex / IPM</div>
+            <div style="font-size: 0.72rem; color: #38BDF8; margin-bottom: 0.15rem;">● Network Simplex (Cost Flow)</div>
+            <div style="font-size: 0.72rem; color: #818CF8; margin-bottom: 0.35rem;">● Dinic / Dijkstra (Max Flow & SP)</div>
+            <div style="font-size: 0.68rem; color: #64748B; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.3rem;">
+                226 Intersections · 1,142 Directed Edges
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+def render_header(title: str, subtitle: str, badge_text: str = "Operations Research Framework", current_page: str = ""):
+    """Renders a uniform, academically branded header banner and renders the sidebar navigation."""
+    render_sidebar_navigation(current_page)
     st.markdown(f"""
     <div class="header-banner">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #06B6D4; font-weight: 700;">
-                BENGALURU SMART TRAFFIC OPTIMIZER // NETWORK OPTIMIZATION LAB
-            </span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div class="header-pretitle">
+                <span class="live-dot"></span>
+                <span>BENGALURU METROPOLITAN TRAFFIC MANAGEMENT // OPERATIONS RESEARCH LAB</span>
+            </div>
             <span class="provenance-badge badge-external">{badge_text}</span>
         </div>
         <h1 class="header-title">{title}</h1>
@@ -42,8 +86,24 @@ def render_header(title: str, subtitle: str, badge_text: str = "Operations Resea
     </div>
     """, unsafe_allow_html=True)
 
+def render_workflow_navigation(
+    prev_page: Optional[str] = None,
+    prev_label: Optional[str] = None,
+    next_page: Optional[str] = None,
+    next_label: Optional[str] = None
+):
+    """Renders a sleek bottom bar for seamless sequential page switching between models."""
+    st.markdown("---")
+    c_prev, c_spacer, c_next = st.columns([1.2, 0.6, 1.2])
+    if prev_page and prev_label:
+        with c_prev:
+            st.page_link(prev_page, label=f"← {prev_label}", use_container_width=True)
+    if next_page and next_label:
+        with c_next:
+            st.page_link(next_page, label=f"{next_label} →", use_container_width=True)
+
 def render_metric(col, title: str, value: Any, subtitle: str = "", status: str = "normal"):
-    """Renders a styled KPI metric box."""
+    """Renders a styled modern KPI metric box with top accent bar."""
     color_class = ""
     if status == "green":
         color_class = "green"
@@ -77,28 +137,28 @@ def get_provenance_badge(provenance: str) -> str:
 def get_plotly_layout(title: str = "", height: int = 500) -> Dict[str, Any]:
     """Returns dark-themed Plotly layout configuration."""
     return dict(
-        title=dict(text=title, font=dict(color="#F1F5F9", size=16)),
-        paper_bgcolor="#172235",
-        plot_bgcolor="#0B1220",
-        font=dict(color="#94A3B8", family="Inter, sans-serif"),
+        title=dict(text=title, font=dict(color="#F8FAFC", size=15, family="Plus Jakarta Sans, sans-serif")),
+        paper_bgcolor="rgba(15, 23, 42, 0.4)",
+        plot_bgcolor="rgba(8, 12, 20, 0.6)",
+        font=dict(color="#94A3B8", family="Plus Jakarta Sans, sans-serif"),
         height=height,
         margin=dict(l=40, r=40, t=50, b=40),
         xaxis=dict(
-            gridcolor="#1E293B",
-            linecolor="#334155",
+            gridcolor="rgba(255, 255, 255, 0.06)",
+            linecolor="rgba(255, 255, 255, 0.1)",
             tickfont=dict(color="#94A3B8"),
-            title=dict(font=dict(color="#F1F5F9"))
+            title=dict(font=dict(color="#F8FAFC"))
         ),
         yaxis=dict(
-            gridcolor="#1E293B",
-            linecolor="#334155",
+            gridcolor="rgba(255, 255, 255, 0.06)",
+            linecolor="rgba(255, 255, 255, 0.1)",
             tickfont=dict(color="#94A3B8"),
-            title=dict(font=dict(color="#F1F5F9"))
+            title=dict(font=dict(color="#F8FAFC"))
         ),
         legend=dict(
-            bgcolor="rgba(23, 34, 53, 0.8)",
-            bordercolor="#334155",
-            font=dict(color="#F1F5F9")
+            bgcolor="rgba(15, 23, 42, 0.8)",
+            bordercolor="rgba(255, 255, 255, 0.08)",
+            font=dict(color="#F8FAFC")
         )
     )
 

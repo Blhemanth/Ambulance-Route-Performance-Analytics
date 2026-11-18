@@ -262,6 +262,25 @@ Perform an exhaustive technical audit of the workspace, catalog and classify all
   - **23/23 unit tests PASSED (100% in 8.94s)**.
   - Automated smoke test verified all 7 presets across Model 1 (all 3 solvers, 2 capacity metrics), Model 2 (2 cost metrics), and Model 3 (3 weight metrics and route comparisons).
   - All 11 Streamlit application files compiled cleanly under Python 3.9 and Python 3.13.
-  - `TESTING_REPORT.md`
-  - `EXPERIMENTAL_RESULTS.md`
-  - `PROJECT_DEVELOPMENT_LOG.md`
+### 8. Phase 11: Bespoke Institutional UI/UX Redesign & Linear Workflow Navigation
+- **Eliminated Generic AI Aesthetic**:
+  - Removed robotic cliché text headers, sci-fi neon cyan boxes, and emoji-heavy section headings.
+  - Replaced with authoritative institutional design: *Bengaluru Metropolitan Traffic Management // Operations Research Division*.
+- **Modern Design System & CSS (`assets/style.css`)**:
+  - Integrated Google Fonts (`Plus Jakarta Sans` for modern typography and `JetBrains Mono` for math).
+  - Adopted deep carbon slate canvas (`#080C14`) with subtle mesh radial gradients.
+  - Implemented glassmorphic cards (`rgba(15, 23, 42, 0.75)`) with fine translucent borders (`1px solid rgba(255, 255, 255, 0.08)`) and backdrop blur.
+  - Replaced thick left-border KPI boxes with refined top-accent cards (`border-top: 3px solid ...`) featuring smooth hover elevation (`translateY(-2px)`).
+- **Custom Categorized Sidebar Navigation (`components/ui_helpers.py` & `.streamlit/config.toml`)**:
+  - Suppressed Streamlit's raw default page list via `showSidebarNavigation = false`.
+  - Built custom categorized navigation drawer:
+    - *System Architecture:* 00. Executive Portal, 01. Corpus Architecture, 02. Signal Plan Explorer, 03. Network Topology Map
+    - *Core Network Models:* 04. Model 1: Maximum Flow, 05. Model 2: Min Cost Flow, 06. Model 3: Shortest Path, 07. Model 4: Signal Timing LP
+    - *Evaluation & Proofs:* 08. Dynamic Simulation, 09. Scenario Stress Testing, 10. Formulations & Proofs
+  - Added live pulsing status dot (`● SYSTEM OPERATIONAL`) and real-time solver telemetry in the sidebar.
+- **Micro-Animations & Smooth Page Transitions**:
+  - Added `@keyframes pageFadeIn` for smooth upward entrance on every page load.
+  - Added `@keyframes pulseLive` for glowing status indicators.
+  - Added hover slide-and-glow micro-interactions on navigation links and buttons.
+- **Linear Workflow Navigation (`render_workflow_navigation`)**:
+  - Added interactive "← Previous Model" and "Next Model →" footer bars on every single page, enabling seamless sequential progression through the 12-step OR optimization framework.

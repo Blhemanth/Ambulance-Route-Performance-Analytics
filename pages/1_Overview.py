@@ -12,6 +12,7 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     get_provenance_badge,
     get_plotly_layout,
     load_all_datasets,
@@ -24,7 +25,8 @@ load_custom_css()
 render_header(
     title="Executive Overview & Dataset Audit",
     subtitle="Bengaluru Traffic Police / Bharat Electronics Limited 118 Signal PDF Corpus Analysis",
-    badge_text="Executive Summary"
+    badge_text="Executive Summary",
+    current_page="pages/1_Overview.py"
 )
 
 # Load datasets and graph
@@ -152,3 +154,10 @@ provenance_table = pd.DataFrame([
 
 st.dataframe(provenance_table, use_container_width=True)
 st.caption("Notice: Synthetic demand profiles are explicitly demarcated and calibrated using Highway Capacity Manual (HCM) and IRC saturation flow formulas.")
+
+render_workflow_navigation(
+    prev_page="app.py",
+    prev_label="Executive Portal",
+    next_page="pages/2_Dataset_Explorer.py",
+    next_label="02. Signal Plan Explorer"
+)

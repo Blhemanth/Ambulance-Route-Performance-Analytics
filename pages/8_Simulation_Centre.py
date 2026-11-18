@@ -13,19 +13,21 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     get_plotly_layout,
     load_all_datasets,
     load_road_networks
 )
 from src.simulation.traffic_simulator import TrafficSimulator
 
-st.set_page_config(page_title="Simulation Centre | Bengaluru Smart Traffic", page_icon="🚦", layout="wide")
+st.set_page_config(page_title="Simulation Centre | Bengaluru Smart Traffic", page_icon="⏱️", layout="wide")
 load_custom_css()
 
 render_header(
     title="Dynamic Traffic Simulation Centre",
     subtitle="Comparative Meso-Queue Dynamic Simulation Under Identical Stochastic Vehicular Arrivals",
-    badge_text="Dynamic Traffic Simulation"
+    badge_text="Dynamic Traffic Simulation",
+    current_page="pages/8_Simulation_Centre.py"
 )
 
 # Provenance Warning Banner
@@ -184,3 +186,10 @@ for n in sub_G.nodes():
     })
 
 st.dataframe(pd.DataFrame(approach_details), use_container_width=True)
+
+render_workflow_navigation(
+    prev_page="pages/7_Signal_Optimization.py",
+    prev_label="07. Model 4: Signal Optimization",
+    next_page="pages/9_Analytics.py",
+    next_label="09. Scenario Stress Testing"
+)

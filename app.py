@@ -9,6 +9,7 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     load_all_datasets,
     load_road_networks
 )
@@ -20,32 +21,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Apply unified dark theme
+# Apply unified modern dark theme
 load_custom_css()
 
-# Sidebar Navigation and Metadata
-with st.sidebar:
-    st.markdown("### 🚦 Optimization Engine")
-    st.markdown("**Version:** 1.0.0-OR-Release")
-    st.markdown("**Academic Discipline:** Operations Research")
-    st.markdown("**Framework:** Network Models & Linear Programming")
-    st.markdown("---")
-    
-    st.markdown("#### 🔬 Solvers Active")
-    st.markdown("• **Max Flow:** NetworkX Boykov-Kolmogorov / Dinic")
-    st.markdown("• **Min Cost Flow:** Network Simplex")
-    st.markdown("• **Shortest Path:** Dijkstra's Algorithm")
-    st.markdown("• **Signal LP:** SciPy HiGHS Simplex/Interior Point")
-    st.markdown("---")
-    
-    st.markdown("#### 🛡️ Data Provenance Policy")
-    st.caption("Every traffic demand and saturation parameter is classified into `ACTUAL`, `EXTERNAL`, `MEASURED`, `ESTIMATED`, or `SYNTHETIC`. Synthetic volumes are never represented as empirical police counts.")
-
-# Render Executive Header
+# Render Executive Header and Custom Navigation Drawer
 render_header(
     title="Bengaluru Smart Traffic Optimizer",
-    subtitle="Traffic Signal Optimization Using Combined Network Models — Operations Research",
-    badge_text="Operations Research Framework"
+    subtitle="Multi-Intersection Network Flow Optimization & Queue-Minimizing Signal Control",
+    badge_text="Operations Research Suite",
+    current_page="app.py"
 )
 
 # Load underlying dataset and road networks
@@ -63,7 +47,7 @@ except Exception as e:
 # Executive KPI Metrics Row
 c1, c2, c3, c4 = st.columns(4)
 render_metric(c1, "Intersections Geocoded", f"{n_intersections:,}", "Level 1 Network Nodes", "normal")
-render_metric(c2, "Arterial Road Links", f"{n_edges:,}", "Directed Network Edges", "normal")
+render_metric(c2, "Arterial Road Links", f"{n_edges:,}", "Directed Strongly Connected Edges", "normal")
 render_metric(c3, "Extracted Timing Plans", f"{n_timings:,}", "BEL CAD & Police Schedules", "green")
 render_metric(c4, "OR Network Models", "4 Coupled", "Feedback Capacity Loop", "normal")
 
@@ -74,81 +58,91 @@ col_left, col_right = st.columns([1.2, 0.8])
 
 with col_left:
     st.markdown("""
-    ### 🎯 Academic Objective & Research Scope
+    ### Academic Research Scope & Problem Formulation
     
-    In high-density metropolitan road networks such as Bengaluru, uncoordinated isolated signal timings 
-    create severe queue spillback, intersection starvation, and network-wide gridlock. 
+    In high-density metropolitan road networks such as Bengaluru, isolated, uncoordinated signal timings 
+    generate severe downstream queue spillback, intersection starvation, and system-wide traffic breakdown. 
     
-    This framework implements **Four Interconnected Operations Research Network Models** to optimize vehicular flow 
+    This computational framework implements **Four Interconnected Operations Research Network Models** to optimize vehicular flow 
     across 226 geocoded intersections derived from 118 official Bharat Electronics Limited (BEL) & Bengaluru 
-    Traffic Police (BTP) signal design drawings:
+    Traffic Police (BTP) signal engineering plans:
     
     1. **Model 1: Maximum Flow (Ford-Fulkerson / Dinic)**  
-       Calculates the upper bound of hourly vehicular throughput ($F^*$) across corridor cuts, identifying saturated bottleneck links via the Max-Flow Min-Cut Theorem.
+       Calculates the theoretical upper bound of hourly vehicular throughput ($F^*$) across arterial cuts, identifying saturated bottleneck links via the Max-Flow Min-Cut Theorem.
     
     2. **Model 2: Minimum Cost Flow (Network Simplex)**  
-       Solves the optimal multicommodity mass-balance traffic allocation $\\min \\sum c_{ij} x_{ij}$ minimizing total vehicular travel delay while respecting capacity bounds $x_{ij} \\le u_{ij}$.
+       Solves the optimal multicommodity mass-balance traffic allocation $\\min \\sum c_{ij} x_{ij}$, minimizing total system travel delay while strictly satisfying link capacities $x_{ij} \\le u_{ij}$.
     
-    3. **Model 3: Shortest Path (Dijkstra)**  
-       Computes minimum-impedance routing between critical origin-destination pairs and quantifies travel-time savings after signal timing reconfiguration.
+    3. **Model 3: Shortest Path Routing (Dijkstra)**  
+       Computes minimum-impedance routing trajectories between major activity centres and quantifies travel-time savings after signal timing reconfiguration.
     
     4. **Model 4: Signal Timing Linear Programming (SciPy HiGHS)**  
-       Optimizes phase green splits $g_{jp}$ to minimize residual queues subject to cycle conservation $\\sum g_{jp} + L_j = C_j$, minimum clearance bounds, and lane saturation capacities.
+       Optimizes phase green splits $g_{jp}$ to minimize residual queues subject to cycle time conservation $\\sum g_{jp} + L_j = C_j$, minimum clearance intervals, and saturation flow rates.
     
-    **The Feedback Loop:** Model 4's optimized green splits update effective movement capacities $u_{ij}$ and Webster delay impedances $c_{ij}$, which directly re-parameterize Models 1, 2, and 3.
+    **The Feedback Capacity Loop:** Model 4's optimized green splits update effective link capacities $u_{ij} = s_{ij} \\times (g_{jp} / C_j)$ and Webster delay impedances $c_{ij}$, which directly re-parameterize Models 1, 2, and 3 for iterative equilibrium.
     """)
 
 with col_right:
     st.markdown("""
-    ### 🗺️ Study Corridors
-    The framework evaluates five major congested Bengaluru arterial corridors:
+    ### Key Metropolitan Study Corridors
+    The mathematical models are calibrated against five key Bengaluru arterial corridors:
     
-    • **Corridor A (Outer Ring Road):** Silk Board $\\to$ HSR $\\to$ Bellandur $\\to$ Marathahalli $\\to$ Doddanekundi $\\to$ KR Puram  
-    • **Corridor B (Old Airport Road):** Domlur Flyover $\\to$ Kodihalli $\\to$ HAL $\\to$ Marathahalli  
-    • **Corridor C (Hosur Road):** Madiwala Checkpost $\\to$ St. John's $\\to$ Silk Board $\\to$ Electronic City  
-    • **Corridor D (Indiranagar / CMH Road):** CMH Rd $\\to$ 100ft Rd $\\to$ Double Rd $\\to$ Swami Vivekananda Rd  
-    • **Corridor E (Bannerghatta Road):** Dairy Circle $\\to$ Jayadeva $\\to$ Vega City $\\to$ Gottigere  
+    - **Corridor 1 (South-Central Arterial):** Adugodi $\\to$ Koramangala $\\to$ Wilson Garden $\\to$ Dairy Circle  
+    - **Corridor 2 (East Corridor):** Indiranagar $\\to$ CMH Road $\\to$ Old Madras Road $\\to$ Frazer Town  
+    - **Corridor 3 (West Corridor):** Mysore Road $\\to$ Byatarayanapura $\\to$ Vijayanagar  
+    - **Corridor 4 (North Corridor):** Sadashivanagar $\\to$ Bhashyam Circle $\\to$ Mekhri Circle $\\to$ Hebbal  
+    - **Corridor 5 (South-West Corridor):** Kanakapura Road $\\to$ Banashankari $\\to$ Konanakunte  
+    - **Outer Ring Road & Hosur Highway:** Central Silk Board $\\to$ Bellandur $\\to$ Mahadevapura $\\to$ Electronic City  
     
     ---
-    #### 🚀 Navigate Multi-Page Modules
-    Use the **sidebar page navigator** on the left to explore each model in detail, run interactive solvers, inspect datasets, and review sensitivity stress tests.
+    #### Linear Workflow Navigation
+    Use the **sidebar navigation** or the workflow switcher below to step through each module sequentially from data parsing to mathematical optimality proofs.
     """)
 
 st.markdown("---")
 
-# Module Overview Grid
-st.markdown("### 📚 Operations Research Module Directory")
+# Module Overview Grid with Direct Interactive Links
+st.markdown("### Operations Research Module Directory")
 m1, m2, m3 = st.columns(3)
 
 with m1:
     st.markdown("""
     <div class="or-card">
-        <h4 style="color:#06B6D4; margin-top:0;">01 & 02. Data & Network</h4>
-        <p style="font-size:0.88rem; color:#94A3B8;">
-            <b>Overview & Dataset Explorer:</b> Audit 118 PDF/CAD signal plans, inspect geocoded nodes, approach lanes, and TOD phase schedules.<br><br>
-            <b>Network Visualization:</b> Dual-level graph explorer for Macro corridors and Micro turning movements.
+        <h4 style="color:#06B6D4; margin-top:0; font-size:1.05rem;">Phase I: Data & Topology</h4>
+        <p style="font-size:0.86rem; color:#94A3B8; line-height:1.5;">
+            Inspect 118 PDF/CAD signal plans, approach geometry, time-of-day phase schedules, and explore the dual-level macro/micro directed graph.
         </p>
     </div>
     """, unsafe_allow_html=True)
+    st.page_link("pages/1_Overview.py", label="Explore Corpus Overview", icon="📊", use_container_width=True)
+    st.page_link("pages/3_Network_Visualization.py", label="View Network Topology", icon="🗺️", use_container_width=True)
 
 with m2:
     st.markdown("""
     <div class="or-card">
-        <h4 style="color:#22C55E; margin-top:0;">03 & 04. Flow & Routing</h4>
-        <p style="font-size:0.88rem; color:#94A3B8;">
-            <b>Maximum Flow:</b> Cut capacity analysis and bottleneck edge detection using Dinic's algorithm.<br><br>
-            <b>Minimum Cost Flow:</b> Balanced mass-conservation transshipment allocation with Network Simplex.
+        <h4 style="color:#10B981; margin-top:0; font-size:1.05rem;">Phase II: Flow & Routing</h4>
+        <p style="font-size:0.86rem; color:#94A3B8; line-height:1.5;">
+            Solve maximum network capacity ($F^*$), identify saturated min-cut bottlenecks, and allocate equilibrium traffic via Network Simplex.
         </p>
     </div>
     """, unsafe_allow_html=True)
+    st.page_link("pages/4_Maximum_Flow.py", label="Run Model 1: Maximum Flow", icon="⚡", use_container_width=True)
+    st.page_link("pages/5_Minimum_Cost_Flow.py", label="Run Model 2: Min Cost Flow", icon="⚖️", use_container_width=True)
 
 with m3:
     st.markdown("""
     <div class="or-card">
-        <h4 style="color:#F59E0B; margin-top:0;">05, 06 & 07. Optimization & Sim</h4>
-        <p style="font-size:0.88rem; color:#94A3B8;">
-            <b>Shortest Path & Signal LP:</b> Dijkstra impedance comparison and exact HiGHS queue-minimizing green split LP.<br><br>
-            <b>Simulation & Analytics:</b> Meso-queue dynamics, +10% to +30% demand sensitivity, and dual theorems.
+        <h4 style="color:#F59E0B; margin-top:0; font-size:1.05rem;">Phase III: Optimization & Proofs</h4>
+        <p style="font-size:0.86rem; color:#94A3B8; line-height:1.5;">
+            Optimize green splits using SciPy HiGHS LP, compare Dijkstra route travel times, and execute meso-queue dynamic simulations.
         </p>
     </div>
     """, unsafe_allow_html=True)
+    st.page_link("pages/7_Signal_Optimization.py", label="Run Model 4: Signal Timing LP", icon="🚦", use_container_width=True)
+    st.page_link("pages/9_Analytics.py", label="Stress Testing & Benchmarks", icon="📈", use_container_width=True)
+
+# Sequential Workflow Switcher
+render_workflow_navigation(
+    next_page="pages/1_Overview.py",
+    next_label="01. Corpus Architecture"
+)

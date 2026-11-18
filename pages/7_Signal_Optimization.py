@@ -13,6 +13,7 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     get_plotly_layout,
     load_all_datasets
 )
@@ -24,7 +25,8 @@ load_custom_css()
 render_header(
     title="Model 4: Traffic Signal Timing Linear Programming",
     subtitle="Queue-Minimizing Green Split Allocation via SciPy HiGHS Simplex Subject to Cycle Conservation",
-    badge_text="Operations Research - Model 4"
+    badge_text="Operations Research - Model 4",
+    current_page="pages/7_Signal_Optimization.py"
 )
 
 with st.expander("📐 Mathematical Model 4 Formulation (Queue LP & Webster Delay)", expanded=False):
@@ -246,3 +248,10 @@ if res.get("is_optimal"):
 
 else:
     st.error(f"HiGHS solver reported non-optimal state: {res.get('status')}")
+
+render_workflow_navigation(
+    prev_page="pages/6_Shortest_Path.py",
+    prev_label="06. Model 3: Shortest Path",
+    next_page="pages/8_Simulation_Centre.py",
+    next_label="08. Dynamic Simulation"
+)

@@ -8,7 +8,8 @@ import streamlit as st
 import pandas as pd
 from components.ui_helpers import (
     load_custom_css,
-    render_header
+    render_header,
+    render_workflow_navigation
 )
 
 st.set_page_config(page_title="Methodology | Bengaluru Smart Traffic", page_icon="📜", layout="wide")
@@ -17,7 +18,8 @@ load_custom_css()
 render_header(
     title="Operations Research Methodology & Mathematical Formulations",
     subtitle="Theoretical Rigor, Primal-Dual Network Formulations, Coupling Feedback Proofs & Academic Defense",
-    badge_text="Operations Research Theory"
+    badge_text="Operations Research Theory",
+    current_page="pages/10_Methodology.py"
 )
 
 st.markdown("""
@@ -172,3 +174,10 @@ with tab_refs:
     6. **Transportation Research Board (TRB). (2010).**  
        *Highway Capacity Manual (HCM 2010).* National Research Council, Washington, D.C.
     """)
+
+render_workflow_navigation(
+    prev_page="pages/9_Analytics.py",
+    prev_label="09. Scenario Stress Testing",
+    next_page="app.py",
+    next_label="Executive Portal"
+)

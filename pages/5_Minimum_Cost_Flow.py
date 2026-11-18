@@ -13,6 +13,7 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     get_plotly_layout,
     load_all_datasets,
     load_road_networks
@@ -26,7 +27,8 @@ load_custom_css()
 render_header(
     title="Model 2: Minimum Cost Flow Optimization",
     subtitle="Optimal Network Equilibrium Minimizing Total Vehicle Delay Subject to Mass Balance Constraints",
-    badge_text="Operations Research - Model 2"
+    badge_text="Operations Research - Model 2",
+    current_page="pages/5_Minimum_Cost_Flow.py"
 )
 
 with st.expander("📐 Mathematical Model 2 Formulation (Network Simplex)", expanded=False):
@@ -178,3 +180,10 @@ else:
 
     else:
         st.error(f"Network Simplex was unable to satisfy flow: {res.get('message', 'Capacity exceeded or disconnected path.')}")
+
+render_workflow_navigation(
+    prev_page="pages/4_Maximum_Flow.py",
+    prev_label="04. Model 1: Maximum Flow",
+    next_page="pages/6_Shortest_Path.py",
+    next_label="06. Model 3: Shortest Path"
+)

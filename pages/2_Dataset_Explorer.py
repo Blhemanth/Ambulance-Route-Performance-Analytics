@@ -9,6 +9,7 @@ import pandas as pd
 from components.ui_helpers import (
     load_custom_css,
     render_header,
+    render_workflow_navigation,
     load_all_datasets
 )
 
@@ -18,7 +19,8 @@ load_custom_css()
 render_header(
     title="Bengaluru Signal Dataset Explorer",
     subtitle="Searchable Catalog of 226 Intersections, 652 Approaches, 879 Phases & 5,362 Timing Plans",
-    badge_text="Ground Truth Data"
+    badge_text="Ground Truth Data",
+    current_page="pages/2_Dataset_Explorer.py"
 )
 
 data = load_all_datasets()
@@ -163,3 +165,10 @@ with tab6:
     else:
         diff = sum_allocated - c_cycle
         st.warning(f"⚠️ Imbalance: Allocated = {sum_allocated}s, Target Cycle = {c_cycle}s (Difference: {diff:+0.1f}s)")
+
+render_workflow_navigation(
+    prev_page="pages/1_Overview.py",
+    prev_label="01. Corpus Architecture",
+    next_page="pages/3_Network_Visualization.py",
+    next_label="03. Network Topology Map"
+)

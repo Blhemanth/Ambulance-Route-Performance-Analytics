@@ -12,6 +12,7 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     get_plotly_layout,
     load_all_datasets,
     load_road_networks
@@ -24,7 +25,8 @@ load_custom_css()
 render_header(
     title="Operations Research Analytics & Sensitivity Stress Testing",
     subtitle="Comparative Scenario Benchmarking and Network Elasticity Under +10%, +20%, and +30% Demand Surges",
-    badge_text="Experimental Design - Scenarios A, B, C"
+    badge_text="Experimental Design - Scenarios A, B, C",
+    current_page="pages/9_Analytics.py"
 )
 
 data = load_all_datasets()
@@ -203,3 +205,10 @@ with tab_bottlenecks:
     ])
 
     st.dataframe(migration_data, use_container_width=True)
+
+render_workflow_navigation(
+    prev_page="pages/8_Simulation_Centre.py",
+    prev_label="08. Dynamic Simulation",
+    next_page="pages/10_Methodology.py",
+    next_label="10. Formulations & Proofs"
+)

@@ -12,6 +12,7 @@ from components.ui_helpers import (
     load_custom_css,
     render_header,
     render_metric,
+    render_workflow_navigation,
     get_plotly_layout,
     load_all_datasets,
     load_road_networks
@@ -19,13 +20,14 @@ from components.ui_helpers import (
 from src.network.shortest_path import ShortestPathOptimizer
 from src.network.network_integrator import NetworkIntegrator
 
-st.set_page_config(page_title="Model 3: Shortest Path | Bengaluru Smart Traffic", page_icon="🧭", layout="wide")
+st.set_page_config(page_title="Model 3: Shortest Path | Bengaluru Smart Traffic", page_icon="🛣️", layout="wide")
 load_custom_css()
 
 render_header(
     title="Model 3: Shortest Path Optimization (Dijkstra)",
     subtitle="Determining Minimum-Cost Vehicular Routes and Comparing Baseline vs. Signal-Optimized Delays",
-    badge_text="Operations Research - Model 3"
+    badge_text="Operations Research - Model 3",
+    current_page="pages/6_Shortest_Path.py"
 )
 
 with st.expander("📐 Mathematical Model 3 Formulation (Binary Shortest Path IP)", expanded=False):
@@ -220,3 +222,10 @@ else:
 
     else:
         st.error(f"Routing computation failed: {comp.get('message', 'No path exists between nodes.')}")
+
+render_workflow_navigation(
+    prev_page="pages/5_Minimum_Cost_Flow.py",
+    prev_label="05. Model 2: Min Cost Flow",
+    next_page="pages/7_Signal_Optimization.py",
+    next_label="07. Model 4: Signal Optimization"
+)
