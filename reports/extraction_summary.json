@@ -1,0 +1,33 @@
+{
+  "pipeline_status": "SUCCESS",
+  "file_counts": {
+    "intersections": 226,
+    "roads": 652,
+    "signal_phases": 879,
+    "signal_timings": 5362,
+    "extraction_errors": 0
+  },
+  "validation_results": {
+    "total_intersections": 226,
+    "invalid_coordinates_intersections": 0,
+    "total_roads": 652,
+    "orphaned_roads": 0,
+    "invalid_lane_roads": 0,
+    "invalid_capacity_roads": 0,
+    "total_signal_phases": 879,
+    "orphaned_signal_phases": 0,
+    "total_timing_records": 5362,
+    "orphaned_timing_records": 0,
+    "flagged_discrepancy_timings": 492,
+    "out_of_bounds_cycles": 407,
+    "total_logged_errors": 0,
+    "is_valid": true
+  },
+  "exported_files": {
+    "intersections": "data/processed\\intersections.csv",
+    "roads": "data/processed\\roads.csv",
+    "signal_phases": "data/processed\\signal_phases.csv",
+    "signal_timings": "data/processed\\signal_timings.csv",
+    "extraction_errors": "data/processed\\extraction_errors.csv"
+  }
+}
