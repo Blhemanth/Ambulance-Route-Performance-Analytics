@@ -447,30 +447,51 @@ def render_gis_map_in_streamlit(
 ):
     """
     Renders the Folium map inside Streamlit.
-    Optimized to prevent unnecessary re-running.
+    Optimized to prevent unnecessary re-running and provides multi-tiered rendering fallbacks.
     """
-    if not HAS_FOLIUM or m is None:
-        st.warning(
-            "⚠️ **Interactive GIS Map Component Disabled**\n\n"
-            "`folium` is not installed in the currently active Python environment.\n\n"
-            "To enable interactive OpenStreetMap / Leaflet navigation, run in your terminal:\n"
-            "```bash\n"
-            "pip install folium streamlit-folium\n"
-            "```"
+    if not HAS_FOLIUM:
+        import sys
+        py_exe = sys.executable
+        st.error(
+            f"### ⚠️ Interactive GIS Map Component Unavailable\n\n"
+            f"`folium` is not installed in the currently active Python runtime:\n"
+            f"- **Active Interpreter:** `{py_exe}`\n\n"
+            f"To enable interactive OpenStreetMap / Leaflet navigation, run in your terminal:\n"
+            f"```bash\n"
+            f'"{py_exe}" -m pip install folium streamlit-folium geopandas osmnx\n'
+            f"```"
         )
         return
 
-    if HAS_STREAMLIT_FOLIUM:
-        st_folium(
-            m,
-            height=height,
-            use_container_width=True,
-            returned_objects=[],  # Do not trigger rerun on map pan/zoom
-            key=key
+    if m is None:
+        st.warning(
+            "⚠️ **GIS Map Notice**: No map object was generated for the current parameter configuration. "
+            "Please verify that origin and destination nodes are distinct and valid."
         )
-    else:
-        # Graceful fallback to HTML iframe if streamlit_folium is missing
-        st.components.v1.html(m._repr_html_(), height=height)
+        return
+
+    # Tier 1: Interactive bi-directional Leaflet widget via streamlit-folium
+    if HAS_STREAMLIT_FOLIUM:
+        try:
+            st_folium(
+                m,
+                height=height,
+                use_container_width=True,
+                returned_objects=[],  # Do not trigger rerun on map pan/zoom
+                key=key
+            )
+            return
+        except Exception:
+            # Fall through to Tier 2 iframe rendering if component bridge encounters an error
+            pass
+
+    # Tier 2: Resilient Leaflet HTML iframe rendering fallback
+    # Guarantees the interactive map ALWAYS renders if folium is available
+    try:
+        html_content = m._repr_html_()
+        st.components.v1.html(html_content, height=height)
+    except Exception as err:
+        st.error(f"⚠️ Error rendering Leaflet map: {err}")
 
 def build_hospital_popup(h_row: Dict[str, Any], c_row: Optional[Dict[str, Any]] = None) -> str:
     """Builds an informative HTML popup card for a hospital facility and its snapped road connection."""

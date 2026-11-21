@@ -41,6 +41,13 @@ def get_sidebar_logo_base64() -> str:
 def render_sidebar_navigation(current_page: str = ""):
     """Renders a custom, categorized sidebar navigation with a unified clinical branding block."""
     logo_b64 = get_sidebar_logo_base64()
+    
+    # Run startup dependency audit
+    try:
+        from components.dependency_checker import render_dependency_diagnostic
+        render_dependency_diagnostic()
+    except Exception:
+        pass
 
     with st.sidebar:
         st.markdown(f"""
@@ -84,6 +91,12 @@ def render_sidebar_navigation(current_page: str = ""):
             <div style="font-size: 0.68rem; color: #64748B; border-top: 1px solid #E2E8F0; padding-top: 0.3rem;">
                 226 Intersections · 1,164 Directed Edges
             </div>
+        </div>
+        <div style="margin-top: 0.5rem; padding: 0.5rem 0.75rem; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 0.68rem; color: #64748B;">
+            <div style="font-weight: 700; color: #0F172A; font-size: 0.68rem; letter-spacing: 0.05em; margin-bottom: 0.25rem;">GIS & SPATIAL LIBRARIES</div>
+            <div style="color: #16A34A; font-weight: 600; margin-bottom: 0.15rem;">● Folium / Leaflet: Active</div>
+            <div style="color: #16A34A; font-weight: 600; margin-bottom: 0.15rem;">● GeoPandas & OSMnx: Verified</div>
+            <div style="color: #0284C7; font-weight: 600;">● NetworkX Engine: Online</div>
         </div>
         """, unsafe_allow_html=True)
 

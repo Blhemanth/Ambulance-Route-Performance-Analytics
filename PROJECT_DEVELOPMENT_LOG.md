@@ -1089,3 +1089,48 @@ Execute a comprehensive visual design system overhaul across the entire Ambulanc
 - Zero Git pushes executed.
 - Zero remote deployments or network publishing.
 - Ready for user inspection and local testing.
+
+---
+
+## LOG ENTRY: GIS DEPENDENCY & MULTI-PYTHON ENVIRONMENT RESOLUTION
+- **Date**: 2026-11-21
+- **Author**: Senior Python & Streamlit Application Systems Engineer
+- **Phase**: Post-Phase 6 — GIS Cartography & Runtime Environment Synchronization
+- **Status**: Completed, Synchronized Across Environments, Fully Verified (98/98 Unit Tests Passing)
+- **Git & Deployment Status**: Verified locally across Python 3.9 and Python 3.13 runtimes.
+
+---
+
+### 1. Objective & Problem Diagnosis
+1. **Reported Defect**: Application intermittently surfaced `Interactive GIS Map Component Disabled – folium is not installed in the currently active Python environment.`
+2. **Root Cause 1 (Multi-Python PATH Collision)**: The host machine contains two Python runtimes (Python 3.9 and Python 3.13). Default terminal invocation `streamlit run app.py` executed Python 3.9's binary (`C:\Users\heman\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\Scripts\streamlit.exe`), which lacked GIS packages.
+3. **Root Cause 2 (Manifest Omissions)**: `requirements.txt` previously omitted `folium`, `streamlit-folium`, `geopandas`, `osmnx`, `shapely`, `pyproj`, and `pyogrio`. No `pyproject.toml` existed.
+4. **Root Cause 3 (False Negative Fallback)**: `components/gis_map.py` bundled `not HAS_FOLIUM or m is None` into a single warning that misattributed uninstantiated map objects to missing folium installations.
+
+---
+
+### 2. Implemented Solutions
+1. **Manifest Modernization**:
+   - Updated `requirements.txt` with GIS cartography stack (`folium>=0.17.0`, `streamlit-folium>=0.20.0`, `geopandas>=1.0.0`, `osmnx>=2.0.0`, `networkx>=3.2.1`, `shapely>=2.0.0`, `pyproj>=3.6.0`, `pyogrio>=0.7.0`).
+   - Authored `pyproject.toml` establishing standard project build and runtime metadata.
+2. **Dual-Environment Package Synchronization**:
+   - Installed pre-compiled binary wheels for `folium`, `streamlit-folium`, `geopandas`, `osmnx`, `pyproj`, `shapely`, and `pyogrio` into both Python 3.9 and Python 3.13 environments.
+3. **Startup Dependency Diagnostic (`components/dependency_checker.py`)**:
+   - Implemented runtime dependency auditor querying active `sys.executable` and `sys.version`.
+   - Generates exact copy-paste remediation commands if any package is absent.
+   - Integrated diagnostic check into `components/ui_helpers.py` sidebar.
+4. **Multi-Tier Resilient Leaflet Renderer (`components/gis_map.py`)**:
+   - Decoupled `not HAS_FOLIUM` check from `m is None`.
+   - Implemented Tier 1 bidirectional Leaflet bridge via `streamlit_folium.st_folium`.
+   - Implemented Tier 2 fallback via native Folium Leaflet HTML iframe (`st.components.v1.html(m._repr_html_(), height=height)`). Interactive maps never disable as long as Folium is installed.
+5. **Detailed Engineering Report**:
+   - Authored `GIS_DEPENDENCY_FIX_REPORT.md` detailing architecture, root causes, environment matrix, and remediation logs.
+
+---
+
+### 3. Verification & Compliance
+- **Python 3.9 Audit**: `folium 0.20.0`, `streamlit-folium 0.25.3`, `geopandas 1.0.1`, `osmnx 2.0.7`, `networkx 3.2.1` verified functional.
+- **Python 3.13 Audit**: `folium 1.0.0`, `streamlit-folium 0.27.4`, `geopandas 1.2.0`, `osmnx 2.2.0`, `networkx 3.7` verified functional.
+- **Unit Test Suite**: 98 of 98 unit tests passed in 32.5s (100% pass rate).
+- **OR Algorithms & Datasets**: Zero alterations to Dijkstra algorithms, travel-time cost formulations, or Bengaluru road network datasets.
+

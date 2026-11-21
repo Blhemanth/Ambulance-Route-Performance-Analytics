@@ -1,14 +1,33 @@
+# ==============================================================================
+# AMBULANCE ROUTE OPTIMIZATION — BENGALURU
+# Core Application & Operations Research Dependencies
+# ==============================================================================
+
+# Core Operations Research, Graph Theory & Mathematics
 networkx>=3.2.1
 scipy>=1.13.1
 pulp>=2.8.0
-pandas>=2.2.0
 numpy>=1.26.0
-plotly>=5.20.0
+pandas>=2.2.0
+
+# Interactive GIS, Cartography & Spatial Analysis Stack
+folium>=0.17.0
+streamlit-folium>=0.20.0
+geopandas>=1.0.0
+osmnx>=2.0.0
+shapely>=2.0.0
+pyproj>=3.6.0
+pyogrio>=0.7.0
+
+# Visualization & Application Framework
 streamlit>=1.35.0
+plotly>=5.20.0
+matplotlib>=3.8.0
+pydeck>=0.8.0
+Pillow>=10.0.0
+
+# Data Extraction & Signal Timing PDF Processing
 pypdf>=5.0.0
 pdfplumber>=0.11.0
 pdfminer.six>=20231228
-Pillow>=10.0.0
 opencv-python>=4.9.0
-matplotlib>=3.8.0
-pydeck>=0.8.0
