@@ -5,6 +5,7 @@ cached dataset loaders, custom KPI metric cards, and Plotly dark theme layout pr
 """
 
 import os
+import base64
 import pandas as pd
 import streamlit as st
 import networkx as nx
@@ -28,39 +29,34 @@ def load_custom_css():
         </style>
         """, unsafe_allow_html=True)
 
+@st.cache_data
+def get_sidebar_logo_base64() -> str:
+    """Loads and caches the 56x56 base64-encoded ambulance emergency GIS logo."""
+    logo_path = os.path.join(PROJECT_ROOT, "assets", "logo_icon.png")
+    if os.path.exists(logo_path):
+        with open(logo_path, "rb") as f:
+            return base64.b64encode(f.read()).decode("utf-8")
+    return ""
+
 def render_sidebar_navigation(current_page: str = ""):
-    """Renders a custom, categorized sidebar navigation replacing raw default page links."""
-    # Register Streamlit top-left application logo
-    logo_banner_path = os.path.join(PROJECT_ROOT, "assets", "logo_banner.png")
-    logo_icon_path = os.path.join(PROJECT_ROOT, "assets", "logo_icon.png")
-    if hasattr(st, "logo") and os.path.exists(logo_banner_path):
-        st.logo(logo_banner_path, icon_image=logo_icon_path if os.path.exists(logo_icon_path) else None)
+    """Renders a custom, categorized sidebar navigation with a unified clinical branding block."""
+    logo_b64 = get_sidebar_logo_base64()
 
     with st.sidebar:
-        st.markdown("""
-        <div class="sidebar-header">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-                <div style="
-                    width: 38px; 
-                    height: 38px; 
-                    border-radius: 9px; 
-                    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); 
-                    display: flex; 
-                    align-items: center; 
-                    justify-content: center; 
-                    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
-                    flex-shrink: 0;
-                ">
-                    <span style="font-size: 20px; line-height: 1;">🚑</span>
-                </div>
-                <div>
-                    <div class="sidebar-title" style="font-size: 0.90rem; font-weight: 800; color: #0F172A; line-height: 1.15; letter-spacing: -0.01em;">
-                        AMBULANCE ROUTE<br/><span style="color: #0284C7;">OPTIMIZATION</span>
+        st.markdown(f"""
+        <div class="sidebar-brand-block">
+            <div class="sidebar-brand-main">
+                <img src="data:image/png;base64,{logo_b64}" class="sidebar-brand-logo" alt="Ambulance Route Optimization Logo" />
+                <div class="sidebar-brand-text">
+                    <div class="sidebar-brand-title">
+                        <span class="brand-line">AMBULANCE ROUTE</span>
+                        <span class="brand-line">OPTIMIZATION</span>
                     </div>
                 </div>
             </div>
-            <div class="sidebar-sub" style="font-size: 0.67rem; color: #64748B; font-weight: 600; letter-spacing: 0.04em; margin-top: 4px;">
-                Bengaluru Emergency Medical GIS · OR Platform
+            <div class="sidebar-brand-tagline">
+                <span class="brand-dot"></span>
+                <span>Bengaluru Emergency Medical GIS · OR Platform</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
