@@ -219,8 +219,14 @@ section[data-testid="stSidebar"] {
   box-shadow: 1px 0 3px rgba(15, 23, 42, 0.02) !important;
 }
 
+/* Streamlit Sidebar Top Logo */
+[data-testid="stLogo"] {
+  height: 2.75rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
 .sidebar-header {
-  padding: 1.15rem 0.5rem 0.75rem 0.5rem;
+  padding: 0.5rem 0.5rem 0.75rem 0.5rem;
   border-bottom: 1px solid var(--border-subtle);
   margin-bottom: 0.85rem;
 }

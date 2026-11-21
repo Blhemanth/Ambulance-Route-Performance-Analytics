@@ -11,8 +11,9 @@ import networkx as nx
 from typing import Dict, Any, Tuple, Optional
 from src.network.graph_builder import GraphBuilder, map_police_station_to_corridor
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "processed")
-STYLE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "style.css")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(PROJECT_ROOT, "data", "processed")
+STYLE_PATH = os.path.join(PROJECT_ROOT, "assets", "style.css")
 
 def load_custom_css():
     """Injects custom CSS for dark theme, typography, and micro-animations."""
@@ -29,13 +30,38 @@ def load_custom_css():
 
 def render_sidebar_navigation(current_page: str = ""):
     """Renders a custom, categorized sidebar navigation replacing raw default page links."""
+    # Register Streamlit top-left application logo
+    logo_banner_path = os.path.join(PROJECT_ROOT, "assets", "logo_banner.png")
+    logo_icon_path = os.path.join(PROJECT_ROOT, "assets", "logo_icon.png")
+    if hasattr(st, "logo") and os.path.exists(logo_banner_path):
+        st.logo(logo_banner_path, icon_image=logo_icon_path if os.path.exists(logo_icon_path) else None)
+
     with st.sidebar:
         st.markdown("""
         <div class="sidebar-header">
-            <div class="sidebar-title">
-                <span class="live-dot"></span> BENGALURU SMART TRAFFIC
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <div style="
+                    width: 38px; 
+                    height: 38px; 
+                    border-radius: 9px; 
+                    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+                    flex-shrink: 0;
+                ">
+                    <span style="font-size: 20px; line-height: 1;">🚑</span>
+                </div>
+                <div>
+                    <div class="sidebar-title" style="font-size: 0.90rem; font-weight: 800; color: #0F172A; line-height: 1.15; letter-spacing: -0.01em;">
+                        AMBULANCE ROUTE<br/><span style="color: #0284C7;">OPTIMIZATION</span>
+                    </div>
+                </div>
             </div>
-            <div class="sidebar-sub">Operations Research Platform</div>
+            <div class="sidebar-sub" style="font-size: 0.67rem; color: #64748B; font-weight: 600; letter-spacing: 0.04em; margin-top: 4px;">
+                Bengaluru Emergency Medical GIS · OR Platform
+            </div>
         </div>
         """, unsafe_allow_html=True)
         
@@ -73,7 +99,7 @@ def render_header(title: str, subtitle: str, badge_text: str = "Operations Resea
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
             <div class="header-pretitle">
                 <span class="live-dot"></span>
-                <span>BENGALURU METROPOLITAN TRAFFIC MANAGEMENT // OPERATIONS RESEARCH LAB</span>
+                <span>AMBULANCE ROUTE OPTIMIZATION // OPERATIONS RESEARCH LAB</span>
             </div>
             <span class="provenance-badge badge-external">{badge_text}</span>
         </div>
