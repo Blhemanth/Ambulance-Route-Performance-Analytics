@@ -23,7 +23,7 @@ def load_custom_css():
     else:
         st.markdown("""
         <style>
-        .stApp { background-color: #080C14; color: #F8FAFC; }
+        .stApp { background-color: #F8FAFC; color: #0F172A; }
         </style>
         """, unsafe_allow_html=True)
 
@@ -39,32 +39,28 @@ def render_sidebar_navigation(current_page: str = ""):
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown('<div class="nav-section-title">System Architecture</div>', unsafe_allow_html=True)
-        st.page_link("app.py", label="Executive Portal", icon="🏛️", use_container_width=True)
-        st.page_link("pages/1_Overview.py", label="01. Corpus Architecture", icon="📊", use_container_width=True)
-        st.page_link("pages/2_Dataset_Explorer.py", label="02. Signal Plan Explorer", icon="📑", use_container_width=True)
-        st.page_link("pages/3_Network_Visualization.py", label="03. Network Topology Map", icon="🗺️", use_container_width=True)
-        
-        st.markdown('<div class="nav-section-title">Core Network Models</div>', unsafe_allow_html=True)
-        st.page_link("pages/4_Maximum_Flow.py", label="04. Model 1: Maximum Flow", icon="⚡", use_container_width=True)
-        st.page_link("pages/5_Minimum_Cost_Flow.py", label="05. Model 2: Min Cost Flow", icon="⚖️", use_container_width=True)
-        st.page_link("pages/6_Shortest_Path.py", label="06. Model 3: Shortest Path", icon="🛣️", use_container_width=True)
-        st.page_link("pages/7_Signal_Optimization.py", label="07. Model 4: Signal Timing LP", icon="🚦", use_container_width=True)
-        
-        st.markdown('<div class="nav-section-title">Evaluation & Proofs</div>', unsafe_allow_html=True)
-        st.page_link("pages/8_Simulation_Centre.py", label="08. Dynamic Simulation", icon="⏱️", use_container_width=True)
-        st.page_link("pages/9_Analytics.py", label="09. Scenario Stress Testing", icon="📈", use_container_width=True)
-        st.page_link("pages/10_Methodology.py", label="10. Formulations & Proofs", icon="📜", use_container_width=True)
+        st.markdown('<div class="nav-section-title">Ambulance Routing System</div>', unsafe_allow_html=True)
+        st.page_link("app.py", label="Operations Dashboard", icon="🏛️", width="stretch")
+        st.page_link("pages/1_Road_Network_Explorer.py", label="01. Road Network Explorer", icon="🗺️", width="stretch")
+        st.page_link("pages/2_Hospital_Finder.py", label="02. Hospital Finder & Snapping", icon="🏥", width="stretch")
+        st.page_link("pages/3_Ambulance_Route_Optimizer.py", label="03. Ambulance Route Optimizer", icon="🚑", width="stretch")
+        st.page_link("pages/4_Alternative_Route_Comparison.py", label="04. Alternative Route Comparison", icon="🔀", width="stretch")
+        st.page_link("pages/5_Signal_Delay_Analysis.py", label="05. Traffic Signal Delay Analysis", icon="🚦", width="stretch")
+        st.page_link("pages/6_Traffic_Scenario_Analysis.py", label="06. Traffic Scenario Analysis", icon="📊", width="stretch")
+        st.page_link("pages/7_Route_Performance_Analytics.py", label="07. Route Performance Analytics", icon="📈", width="stretch")
+        st.page_link("pages/8_OR_Methodology.py", label="08. OR Methodology & Formulations", icon="📜", width="stretch")
         
         st.markdown("---")
         st.markdown("""
-        <div style="padding: 0.6rem 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;">
-            <div style="font-size: 0.68rem; color: #94A3B8; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.3rem;">ACTIVE SOLVERS</div>
-            <div style="font-size: 0.72rem; color: #34D399; margin-bottom: 0.15rem;">● SciPy HiGHS Simplex / IPM</div>
-            <div style="font-size: 0.72rem; color: #38BDF8; margin-bottom: 0.15rem;">● Network Simplex (Cost Flow)</div>
-            <div style="font-size: 0.72rem; color: #818CF8; margin-bottom: 0.35rem;">● Dinic / Dijkstra (Max Flow & SP)</div>
-            <div style="font-size: 0.68rem; color: #64748B; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.3rem;">
-                226 Intersections · 1,142 Directed Edges
+        <div style="padding: 0.65rem 0.75rem; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px;">
+            <div style="font-size: 0.68rem; color: #64748B; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.35rem;">ACTIVE OR SOLVERS</div>
+            <div style="font-size: 0.72rem; color: #16A34A; margin-bottom: 0.2rem; font-weight: 600;">● Signal-Aware Dijkstra</div>
+            <div style="font-size: 0.72rem; color: #7C3AED; margin-bottom: 0.2rem; font-weight: 600;">● BPR Congestion Scenarios</div>
+            <div style="font-size: 0.72rem; color: #0284C7; margin-bottom: 0.2rem; font-weight: 600;">● Baseline Minimum Time (IRC:106)</div>
+            <div style="font-size: 0.72rem; color: #2563EB; margin-bottom: 0.2rem; font-weight: 600;">● Yen's K-Shortest Loopless Paths</div>
+            <div style="font-size: 0.72rem; color: #D97706; margin-bottom: 0.35rem; font-weight: 600;">● Webster Fixed-Time Delay</div>
+            <div style="font-size: 0.68rem; color: #64748B; border-top: 1px solid #E2E8F0; padding-top: 0.3rem;">
+                226 Intersections · 1,164 Directed Edges
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -97,10 +93,10 @@ def render_workflow_navigation(
     c_prev, c_spacer, c_next = st.columns([1.2, 0.6, 1.2])
     if prev_page and prev_label:
         with c_prev:
-            st.page_link(prev_page, label=f"← {prev_label}", use_container_width=True)
+            st.page_link(prev_page, label=f"← {prev_label}", width="stretch")
     if next_page and next_label:
         with c_next:
-            st.page_link(next_page, label=f"{next_label} →", use_container_width=True)
+            st.page_link(next_page, label=f"{next_label} →", width="stretch")
 
 def render_metric(col, title: str, value: Any, subtitle: str = "", status: str = "normal"):
     """Renders a styled modern KPI metric box with top accent bar."""
@@ -135,30 +131,30 @@ def get_provenance_badge(provenance: str) -> str:
     return f'<span class="provenance-badge {css_class}">{p_up}</span>'
 
 def get_plotly_layout(title: str = "", height: int = 500) -> Dict[str, Any]:
-    """Returns dark-themed Plotly layout configuration."""
+    """Returns light-themed Plotly layout configuration for medical/clinical dashboards."""
     return dict(
-        title=dict(text=title, font=dict(color="#F8FAFC", size=15, family="Plus Jakarta Sans, sans-serif")),
-        paper_bgcolor="rgba(15, 23, 42, 0.4)",
-        plot_bgcolor="rgba(8, 12, 20, 0.6)",
-        font=dict(color="#94A3B8", family="Plus Jakarta Sans, sans-serif"),
+        title=dict(text=title, font=dict(color="#0F172A", size=15, family="Plus Jakarta Sans, sans-serif")),
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#F8FAFC",
+        font=dict(color="#334155", family="Plus Jakarta Sans, sans-serif"),
         height=height,
         margin=dict(l=40, r=40, t=50, b=40),
         xaxis=dict(
-            gridcolor="rgba(255, 255, 255, 0.06)",
-            linecolor="rgba(255, 255, 255, 0.1)",
-            tickfont=dict(color="#94A3B8"),
-            title=dict(font=dict(color="#F8FAFC"))
+            gridcolor="#E2E8F0",
+            linecolor="#CBD5E1",
+            tickfont=dict(color="#64748B"),
+            title=dict(font=dict(color="#0F172A"))
         ),
         yaxis=dict(
-            gridcolor="rgba(255, 255, 255, 0.06)",
-            linecolor="rgba(255, 255, 255, 0.1)",
-            tickfont=dict(color="#94A3B8"),
-            title=dict(font=dict(color="#F8FAFC"))
+            gridcolor="#E2E8F0",
+            linecolor="#CBD5E1",
+            tickfont=dict(color="#64748B"),
+            title=dict(font=dict(color="#0F172A"))
         ),
         legend=dict(
-            bgcolor="rgba(15, 23, 42, 0.8)",
-            bordercolor="rgba(255, 255, 255, 0.08)",
-            font=dict(color="#F8FAFC")
+            bgcolor="#FFFFFF",
+            bordercolor="#E2E8F0",
+            font=dict(color="#0F172A")
         )
     )
 
@@ -232,3 +228,59 @@ def load_road_networks():
     builder = GraphBuilder()
     G_macro, G_micro = builder.build_complete_bengaluru_network()
     return builder, G_macro, G_micro
+
+@st.cache_resource
+def load_gis_network():
+    """Initializes and returns the GIS Network Manager and enriched roads catalog."""
+    from src.network.gis_network import GISNetworkManager
+    gis_mgr = GISNetworkManager()
+    builder, G_macro, G_micro = load_road_networks()
+    roads_gis = gis_mgr.build_roads_gis_catalog(G_macro)
+    df_intersections_gis = gis_mgr.get_intersections_gis()
+    if "corridor" not in df_intersections_gis.columns:
+        from src.network.graph_builder import map_police_station_to_corridor
+        df_intersections_gis["corridor"] = df_intersections_gis.apply(
+            lambda r: map_police_station_to_corridor(r.get("police_station", ""), r.get("name", "")),
+            axis=1
+        )
+    return gis_mgr, roads_gis, df_intersections_gis
+
+@st.cache_resource
+def load_ambulance_router():
+    """
+    Cached singleton loader for the Phase 2 AmbulanceRouter and road graphs.
+    Caches graph construction and hospital catalogs across Streamlit interactions.
+    """
+    from src.network.ambulance_graph import get_ambulance_road_graphs
+    from src.network.ambulance_router import AmbulanceRouter
+    g_multi, g_di = get_ambulance_road_graphs()
+    router = AmbulanceRouter(
+        graph_multi=g_multi,
+        graph_di=g_di,
+        hospitals_csv_path=os.path.join(DATA_DIR, "bengaluru_hospitals.csv"),
+        connections_csv_path=os.path.join(DATA_DIR, "hospital_road_connections.csv")
+    )
+    if not hasattr(router, "find_hospital_route") and hasattr(router, "route_to_hospital"):
+        router.find_hospital_route = router.route_to_hospital
+    return router
+
+@st.cache_data
+def load_hospital_data() -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Loads and caches static hospital inventory and snapping connections."""
+    h_path = os.path.join(DATA_DIR, "bengaluru_hospitals.csv")
+    c_path = os.path.join(DATA_DIR, "hospital_road_connections.csv")
+    df_hospitals = pd.read_csv(h_path) if os.path.exists(h_path) else pd.DataFrame()
+    df_connections = pd.read_csv(c_path) if os.path.exists(c_path) else pd.DataFrame()
+    return df_hospitals, df_connections
+
+@st.cache_data
+def load_congestion_scenario_data() -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Loads and caches traffic data inventory and congestion scenarios."""
+    inv_path = os.path.join(DATA_DIR, "bengaluru_traffic_data_inventory.csv")
+    scen_path = os.path.join(DATA_DIR, "network_congestion_scenarios.csv")
+    df_inv = pd.read_csv(inv_path) if os.path.exists(inv_path) else pd.DataFrame()
+    df_scen = pd.read_csv(scen_path) if os.path.exists(scen_path) else pd.DataFrame()
+    return df_inv, df_scen
+
+
+

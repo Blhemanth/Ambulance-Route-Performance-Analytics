@@ -1,0 +1,36 @@
+feature_index,osm_id,issue,action
+54,164048206,Duplicate of feature 44 ('Isolation Hospital') within 300m,Flagged duplicate
+82,334493056,Duplicate of feature 81 ('Sanjay Gandhi Accident and Trauma Hospital') within 300m,Flagged duplicate
+107,347236390,Facility name is null or blank,Assigned UNNAMED_FACILITY
+116,351121389,Facility name is null or blank,Assigned UNNAMED_FACILITY
+162,678066777,Facility name is null or blank,Assigned UNNAMED_FACILITY
+168,726095464,Facility name is null or blank,Assigned UNNAMED_FACILITY
+205,1076618915,Facility name is null or blank,Assigned UNNAMED_FACILITY
+206,1077744680,Facility name is null or blank,Assigned UNNAMED_FACILITY
+210,1084220447,Facility name is null or blank,Assigned UNNAMED_FACILITY
+233,1205832181,Facility name is null or blank,Assigned UNNAMED_FACILITY
+244,1290125198,Facility name is null or blank,Assigned UNNAMED_FACILITY
+265,1436177631,Duplicate of feature 77 ('ESI Hospital') within 300m,Flagged duplicate
+266,1437213383,Duplicate of feature 212 ('Karunalayam Hospital') within 300m,Flagged duplicate
+279,1464783198,Duplicate of feature 172 ('Shushrusha Hospital') within 300m,Flagged duplicate
+298,1471781028,Duplicate of feature 194 ('Diacon Hospital') within 300m,Flagged duplicate
+321,1474819886,Duplicate of feature 195 ('Fortis Hospital') within 300m,Flagged duplicate
+328,1498008160,Facility name is null or blank,Assigned UNNAMED_FACILITY
+331,1544831540,Facility name is null or blank,Assigned UNNAMED_FACILITY
+408,3714125744,"Duplicate of feature 193 ('Shifa Hospital, Bengaluru Urban') within 300m",Flagged duplicate
+414,4171032289,Facility name is null or blank,Assigned UNNAMED_FACILITY
+460,4446268170,Facility name is null or blank,Assigned UNNAMED_FACILITY
+512,4447119911,Facility name is null or blank,Assigned UNNAMED_FACILITY
+521,4447972412,Duplicate of feature 416 ('Prashanth Hospital') within 300m,Flagged duplicate
+522,4447978869,Duplicate of feature 456 ('Parimala Health Care') within 300m,Flagged duplicate
+526,4448133411,Duplicate of feature 447 ('Welnext') within 300m,Flagged duplicate
+529,4509817152,Duplicate of feature 118 ('ChanRe Rheumatology and Immunology Center and Research') within 300m,Flagged duplicate
+634,6938777910,Duplicate of feature 544 ('National Institute of Mental Health and Neuro Sciences') within 300m,Flagged duplicate
+642,6938783140,Duplicate of feature 487 ('Ring Road Hospital') within 300m,Flagged duplicate
+966,7579924779,Duplicate of feature 313 ('Spurthy Hospital') within 300m,Flagged duplicate
+994,8188038795,Duplicate of feature 530 ('Anupama Hospital') within 300m,Flagged duplicate
+1036,12056743550,Duplicate of feature 175 ('Ashwini Hospital') within 300m,Flagged duplicate
+1042,12270754755,Facility name is null or blank,Assigned UNNAMED_FACILITY
+1061,12956090274,Duplicate of feature 108 ('Proteeth Dental') within 300m,Flagged duplicate
+1062,12959840781,Duplicate of feature 423 ('Trilife Hospital') within 300m,Flagged duplicate
+1083,14378446501,Facility name is null or blank,Assigned UNNAMED_FACILITY

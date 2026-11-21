@@ -6,8 +6,10 @@ import pypdf
 class TestDatasetAudit(unittest.TestCase):
     def setUp(self):
         self.dataset_dir = 'dataset'
-        if not os.path.exists(self.dataset_dir):
-            self.dataset_dir = 'datasets'
+        for candidate in ['dataset', 'datasets', 'traffic datasets']:
+            if os.path.exists(candidate) and glob.glob(os.path.join(candidate, '*.pdf')):
+                self.dataset_dir = candidate
+                break
         self.pdf_files = sorted(glob.glob(os.path.join(self.dataset_dir, '*.pdf')))
 
     def test_total_file_count(self):

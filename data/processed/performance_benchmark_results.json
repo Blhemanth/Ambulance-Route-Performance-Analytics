@@ -1,0 +1,123 @@
+{
+  "benchmark_metadata": {
+    "timestamp": "2026-11-20T23:31:15",
+    "system_scope": "Bengaluru Metropolitan Region Road Network",
+    "algorithm": "Dijkstra's Shortest Path & Yen's K-Shortest Loopless Paths",
+    "framework": "Python 3.13, NetworkX, GeoPandas",
+    "random_seed": 42
+  },
+  "dataset_loading_latency_ms": {
+    "signal_timings_csv": {
+      "record_count": 5362,
+      "load_time_ms": 70.04
+    },
+    "hospitals_geojson": {
+      "feature_count": 1084,
+      "load_time_ms": 28.19
+    },
+    "intersections_gis_csv": {
+      "record_count": 226,
+      "load_time_ms": 7.64
+    },
+    "roads_gis_json": {
+      "link_count": 1164,
+      "load_time_ms": 34.83
+    }
+  },
+  "graph_construction": {
+    "node_count": 226,
+    "directed_edge_count": 1164,
+    "multidigraph_edge_count": 1164,
+    "total_build_time_ms": 1707.13,
+    "is_strongly_connected": true,
+    "strongly_connected_components": 1,
+    "is_weakly_connected": true
+  },
+  "dijkstra_benchmark_50_pairs": {
+    "sample_size": 50,
+    "profile_tested": "COMBINED_TRAFFIC_SIGNAL",
+    "mean_latency_ms": 2.534,
+    "median_latency_ms": 2.406,
+    "std_latency_ms": 1.364,
+    "min_latency_ms": 0.442,
+    "max_latency_ms": 6.989,
+    "p90_latency_ms": 4.349,
+    "p95_latency_ms": 4.806,
+    "p99_latency_ms": 6.055,
+    "mean_hop_count": 6.1,
+    "mean_distance_km": 7.16
+  },
+  "yens_k_shortest_paths": {
+    "k_2": {
+      "requested_k": 2,
+      "sample_size": 20,
+      "mean_latency_ms": 67.953,
+      "median_latency_ms": 63.829,
+      "p95_latency_ms": 127.918,
+      "max_latency_ms": 160.864,
+      "mean_paths_found": 2.0
+    },
+    "k_3": {
+      "requested_k": 3,
+      "sample_size": 20,
+      "mean_latency_ms": 143.9,
+      "median_latency_ms": 133.845,
+      "p95_latency_ms": 276.985,
+      "max_latency_ms": 287.923,
+      "mean_paths_found": 3.0
+    },
+    "k_5": {
+      "requested_k": 5,
+      "sample_size": 20,
+      "mean_latency_ms": 297.499,
+      "median_latency_ms": 287.982,
+      "p95_latency_ms": 511.277,
+      "max_latency_ms": 581.949,
+      "mean_paths_found": 5.0
+    }
+  },
+  "hospital_snapping_benchmark_50_queries": {
+    "sample_size": 50,
+    "mean_latency_ms": 41.548,
+    "median_latency_ms": 40.819,
+    "p95_latency_ms": 44.865,
+    "max_latency_ms": 47.724,
+    "mean_snapping_distance_m": 3333.4
+  },
+  "profile_switching_latency": {
+    "SHORTEST_DISTANCE": {
+      "mean_ms": 4.767,
+      "distance_km": 17.46,
+      "travel_time_min": 21.78
+    },
+    "MINIMUM_ESTIMATED_TIME": {
+      "mean_ms": 4.53,
+      "distance_km": 17.47,
+      "travel_time_min": 21.73
+    },
+    "TIME_PLUS_SIGNAL_DELAY": {
+      "mean_ms": 4.159,
+      "distance_km": 18.17,
+      "travel_time_min": 26.27
+    },
+    "MODERATE_CONGESTION": {
+      "mean_ms": 4.462,
+      "distance_km": 17.47,
+      "travel_time_min": 22.35
+    },
+    "HEAVY_CONGESTION": {
+      "mean_ms": 4.567,
+      "distance_km": 17.46,
+      "travel_time_min": 27.45
+    },
+    "COMBINED_TRAFFIC_SIGNAL": {
+      "mean_ms": 4.305,
+      "distance_km": 17.46,
+      "travel_time_min": 32.24
+    }
+  },
+  "memory_footprint": {
+    "current_python_memory_mb": 25.78,
+    "peak_python_memory_mb": 26.54
+  }
+}

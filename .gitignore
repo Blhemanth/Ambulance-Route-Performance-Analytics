@@ -22,3 +22,8 @@ ENV/
 *.log
 temp_*
 .pytest_cache/
+
+# Large raw datasets (>100MB exceeds GitHub push limit)
+*.osm.pbf
+*.pbf
+Bengaluru road network dataset/
